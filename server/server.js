@@ -12,6 +12,9 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 const schedule = require('./routes/schedule.router')
 const pickEmGroup = require('./routes/pickEmGroup.router')
 const users = require('./routes/user.router')
