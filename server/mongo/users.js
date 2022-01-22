@@ -1,59 +1,67 @@
 const {MongoClient, ObjectId} = require('mongodb')
-const _mongoURL = process.env.MONGO_CONNECTION
-const client = new MongoClient(_mongoURL)
 
 const getUserByIDwPWD = async (id) => {
+    const _mongoURL = process.env.MONGO_CONNECTION
+    const client = new MongoClient(_mongoURL)
+
     try {
         await client.connect()
         const user = await client.db(process.env.DB_NAME).collection("users").find({_id: ObjectId(id)})
+        await client.close()
         return user
     } catch (error){
         console.log(error)
-    } finally {
-        await client.close()
-    }
+    } 
 }
 const getUserByUsernamewPWD = async (username) => {
+    const _mongoURL = process.env.MONGO_CONNECTION
+    const client = new MongoClient(_mongoURL)
+
     try {
         await client.connect()
         const user = await client.db(process.env.DB_NAME).collection("users").find({username: username}).toArray()
+        await client.close()
         return user[0]
     } catch (error){
         console.log(error)
-    } finally {
-        await client.close()
     }
 }
 
-const getUserByID = async (userObj) => {
+const getUserByID = async (id) => {
+    const _mongoURL = process.env.MONGO_CONNECTION
+    const client = new MongoClient(_mongoURL)
+
     try {
         await client.connect()
-        const user = await client.db(process.env.DB_NAME).collection("users").find({_id: new ObjectId(userObj._id)}).toArray()
-        delete user[0].password
-        return user[0]
+        const user = await client.db(process.env.DB_NAME).collection("users").find({_id: new ObjectId(id)}).toArray()
+        const userObj = user[0]
+        userObj._id = await userObj._id.toString()
+        await delete userObj.password
+        await client.close()
+        return userObj
     } catch (error){
         console.log(error)
-    } finally {
-        await client.close()
     }
 }
 
 const putNewUSer = async (username, password) => {
+    const _mongoURL = process.env.MONGO_CONNECTION
+    const client = new MongoClient(_mongoURL)
+
     try {
         await client.connect()
         await client.db(process.env.DB_NAME).collection("users").insertOne({username: username, password: password})
+        await client.close()
+        return true
     } catch (error){
         console.log(error)
-    } finally {
-        await client.close()
     }
 }
 
 
 module.exports = {
-    client: client,
     getUser: getUserByID,
     getUser_Auth: getUserByIDwPWD,
     getUserByUsername: getUserByUsernamewPWD,
-    putNewUSer: putNewUSer
+    putNewUSer: putNewUSer,
 }

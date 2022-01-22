@@ -22,12 +22,16 @@ router.post('/register', async (req, res) => {
     try {
         const username = req.body.username;
         const password = await bcrypt.createPassword(req.body.password);
-        await user.putNewUSer(username, password)
+        const isCreated = await user.putNewUSer(username, password)
+        if (isCreated) {
+            res.sendStatus(201)
+        } else {
+            res.sendStatus(500)
+            console.log('failed to create user')
+        }
     } catch (error) {
         console.log(error)
-    } finally {
-        res.sendStatus(201)
-    }      
+    }   
   });
 
   router.get('/', rejectUnauthenticated, (req, res) => {

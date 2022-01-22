@@ -1,23 +1,21 @@
 const {MongoClient, ObjectId} = require('mongodb')
-const _mongoURL = process.env.MONGO_CONNECTION
-const client = new MongoClient(_mongoURL)
 
-const getGroups = (groupIDs) => {
+
+const getGroups = async (groupIDs) => {
+    const _mongoURL = process.env.MONGO_CONNECTION
+    const client = new MongoClient(_mongoURL)
     try {
         let groups = []
-        await dataAccess.connect()
-        const db = dataAccess.db(process.env.DB_NAME)
+        await client.connect()
+        const db = client.db(process.env.DB_NAME)
         for (const groupID of groupIDs) {
-            const groupObj = await db.collection("pickEmGroups").find({
-                _id: ObjectId(groupID)
-            })
-            groups.push(groupObj)
+            const groupObjCur = await db.collection("pickEmGroups").find({_id: groupID})
+            const groupArray = await groupObjCur.toArray()
+            await groups.push(groupArray)
         }
-        res.send(groups);
+        return groups
     } catch (error) {
         console.log(error);
-    } finally {
-        await dataAccess.close()
     }
 }
 

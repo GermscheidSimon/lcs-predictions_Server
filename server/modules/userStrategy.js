@@ -7,8 +7,9 @@ passport.serializeUser((user, done) => {
     done(null, user);
   });
 
-passport.deserializeUser( async (id, done) => {
-    const userObj  = await _mongo_user.getUser(id)
+passport.deserializeUser( async (user, done) => {
+
+    const userObj  = await _mongo_user.getUser(user._id)
     try {
         if (userObj ) {
             // user found
