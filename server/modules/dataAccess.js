@@ -29,6 +29,7 @@ const getUserByID = (id) => {
 
 const dataAccess = {
     client: client,
-
+    getUser: getUserByID,
+    getUser_Auth: getUserByIDwPWD
 }
 module.exports = dataAccess

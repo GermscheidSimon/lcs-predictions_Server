@@ -32,12 +32,28 @@ router.get('/fetchLeagues', async (req, res) => {
         }
 })
 
-router.get('/fetchTournByLeageID', async (req, res) => {
+router.get('/fetchTournByLeageID/:id', async (req, res) => {
     try {
 
         const tourn = await axios({
              method: 'GET',
-             url: `https://esports-api.lolesports.com/persisted/gw/getTournamentsForLeague?hl=en-US&leagueId=${req.body.leagueID}`,
+             url: `https://esports-api.lolesports.com/persisted/gw/getTournamentsForLeague?hl=en-US&leagueId=${req.params.id}`,
+             headers: {
+                 "x-api-key": `${process.env.API_KEY}`
+             }
+         });
+         res.send(tourn.data) 
+    } catch (error) {
+         console.log(error);
+    }
+})
+
+router.get('/getstandings/:tournID', async (req, res) => {
+    try {
+        
+        const tourn = await axios({
+             method: 'GET',
+             url: `https://esports-api.lolesports.com/persisted/gw/getStandings?hl=en-US&tournamentId=${req.params.tournID}`,
              headers: {
                  "x-api-key": `${process.env.API_KEY}`
              }
@@ -50,51 +66,7 @@ router.get('/fetchTournByLeageID', async (req, res) => {
 
 router.post('/buildLeagueTourn', async (req, res) => {
     try {
-        /*
-        req.body = {
-            league: {
-                "id": "98767991299243165",
-                "slug": "lcs",
-                "name": "LCS",
-                "region": "NORTH AMERICA",
-                "image": "http://static.lolesports.com/leagues/LCSNew-01-FullonDark.png",
-                "priority": 1,
-                "displayPriority": {
-                    "position": 0,
-                    "status": "force_selected"
-                }
-            },
-            tourn: {
-                "id": "106269680921022418",
-                "slug": "lec_2021_summer",
-                "startDate": "2021-06-11",
-                "endDate": "2021-08-30"
-            }
-        }
-        */
-        const league = req.body.league.id
-        const tourn = req.body.tourn
-        const tournEvents = []
-        const leaguescheduleData = await axios({
-            method: 'GET',
-            url: `https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US&leagueId=${league}`,
-            headers: {
-                "x-api-key": `${process.env.API_KEY}`
-            }
-        });
-        const schedule = leaguescheduleData.data.data.schedule.events
-        for (const event of schedule) {
-            const eventStartDateTime = new Date(event.startTime)
-            const tournStatDate = new Date(tourn.startDate)
-            const tournEndDate = new Date(tourn.endDate)
-            const eventIsWithinTournamentStartAndEnd = eventStartDateTime >= tournStatDate && eventStartDateTime <= tournEndDate
-            console.log('found event in Tourn', eventIsWithinTournamentStartAndEnd)
-            if (eventIsWithinTournamentStartAndEnd) {
-                tournEvents.push(event)
-            }
-        }
-
-        res.send(tournEvents) 
+        
     } catch (error) {
         console.log(error);
     }
