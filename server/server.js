@@ -1,11 +1,22 @@
 const express = require('express')
 require('dotenv').config();
-
+const bodyParser = require('body-parser');
+const sessionMiddleware = require('./modules/session-middleware');
+const passport = require('./modules/userStrategy');
 const app = express()
 const PORT = process.env.PORT || 5000
+const schedule = require('./routes/schedule.router')
+const pickEmGroup = require('./routes/pickEmGroup.router')
+const users = require('./routes/user.router')
+
+app.disable("X-Powered-By");
+app.set("trust proxy", 1); 
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use((req, res, next) => {
-    console.log(req.user)
     if(req.headers.origin === 'https://pro-lague-client.herokuapp.com'){
         console.log('from client')
     } else{
@@ -17,24 +28,12 @@ app.use((req, res, next) => {
     next();
 });
 
-app.disable("X-Powered-By");
 
-app.set("trust proxy", 1); 
-const bodyParser = require('body-parser');
-const sessionMiddleware = require('./modules/session-middleware');
-const passport = require('./modules/userStrategy');
 
 // Passport Session Configuration //
-app.use(sessionMiddleware);
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-const schedule = require('./routes/schedule.router')
-const pickEmGroup = require('./routes/pickEmGroup.router')
-const users = require('./routes/user.router')
 app.use('/api/schedule', schedule)
 app.use('/api/pickEmGroup', pickEmGroup)
 app.use('/api/user', users)
