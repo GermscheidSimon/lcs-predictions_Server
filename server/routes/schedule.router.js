@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router()
 const fetchScheduleData = require('../modules/fetchScheduleData.js')
 const axios = require('axios')
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
+
 
 
 router.get('/fetchSchedules', async (req, res) => {

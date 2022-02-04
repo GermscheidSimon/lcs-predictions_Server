@@ -4,7 +4,7 @@ const _mongo_user = require('../mongo/users')
 const crypt = require('./bcrypt')
 
 passport.serializeUser((user, done) => {
-  console.log('cereal')
+  console.log('cereal', user)
     done(null, user);
   });
 
