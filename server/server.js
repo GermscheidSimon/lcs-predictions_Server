@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000
 app.use((req, res, next) => {
     if(req.headers.origin === 'https://pro-lague-client.herokuapp.com'){
         console.log('from client')
+        console.log(req);
     } else{
         (console.log(req.headers))
     }
