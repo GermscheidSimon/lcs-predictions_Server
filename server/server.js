@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
 const app = express()
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 const PORT = process.env.PORT || 5000
 const schedule = require('./routes/schedule.router')
 const pickEmGroup = require('./routes/pickEmGroup.router')
@@ -12,8 +16,7 @@ const users = require('./routes/user.router')
 app.disable("X-Powered-By");
 app.set("trust proxy", 1); 
 app.use(sessionMiddleware);
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 
 app.use((req, res, next) => {
