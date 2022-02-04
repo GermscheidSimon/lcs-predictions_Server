@@ -5,9 +5,13 @@ const account = require('../mongo/account')
 const axios = require('axios')
 const user  = require('../mongo/users')
 const joinCodeGen = require('../modules/joinCodeGen')
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
 
 
-router.get('/getMyGroups',  async(req, res) => {
+
+router.get('/getMyGroups',  rejectUnauthenticated, async(req, res) => {
     try {
         console.log(req.user, 'getgroupsbyuser')
         const accountObj = await account.getAccountByID(req.user._id) // get groups user is a part of
