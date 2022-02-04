@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 5000
 app.use((req, res, next) => {
     if(req.headers.origin === 'https://pro-lague-client.herokuapp.com'){
         console.log('from client')
-        console.log(req);
     } else{
         (console.log(req.headers))
     }
@@ -16,6 +15,10 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', true)
     next();
 });
+
+app.disable("X-Powered-By");
+
+app.set("trust proxy", 1); 
 const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
