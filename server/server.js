@@ -5,10 +5,11 @@ const PORT = process.env.PORT || 5000
 
 app.use((req, res, next) => {
     const corsWhitelist = ['http://localhost:3000', 'https://pro-lague-api.herokuapp.com/*', 'https://pro-lague-client.herokuapp.com/*', 'https://localhost:3000/home']
-    ;
+    console.log(req.headers.origin)
     if (corsWhitelist.indexOf(req.headers.origin) !== -1) {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.header('Access-Control-Allow-Credentials', true)
     }
 
     next();
