@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const schedule = require('./routes/schedule.router')
+console.log(req.user)
 const pickEmGroup = require('./routes/pickEmGroup.router')
 const users = require('./routes/user.router')
 app.use('/api/schedule', schedule)
