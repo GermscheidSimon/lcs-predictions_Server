@@ -4,6 +4,7 @@ const _mongo_user = require('../mongo/users')
 const crypt = require('./bcrypt')
 
 passport.serializeUser((user, done) => {
+  console.log('cereal')
     done(null, user);
   });
 
@@ -13,11 +14,13 @@ passport.deserializeUser( async (user, done) => {
     try {
         if (userObj ) {
             // user found
+            console.log('logonFound')
             done(null, userObj );
           } else {
             // user not found
             // done takes an error (null in this case) and a user (also null in this case)
             // this will result in the server returning a 401 status code
+            console.log('no session')
             done(null, null);
           }
     } catch (error) {
