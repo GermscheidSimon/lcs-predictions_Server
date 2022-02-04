@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
 const app = express()
-
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -15,7 +15,7 @@ const users = require('./routes/user.router')
 
 app.disable("X-Powered-By");
 app.set("trust proxy", 1); 
-app.use(sessionMiddleware);
+
 
 
 
