@@ -5,6 +5,7 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use((req, res, next) => {
+    console.log(req.user)
     if(req.headers.origin === 'https://pro-lague-client.herokuapp.com'){
         console.log('from client')
     } else{
@@ -32,7 +33,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const schedule = require('./routes/schedule.router')
-console.log(req.user)
 const pickEmGroup = require('./routes/pickEmGroup.router')
 const users = require('./routes/user.router')
 app.use('/api/schedule', schedule)
