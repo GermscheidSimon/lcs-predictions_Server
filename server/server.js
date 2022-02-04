@@ -1,20 +1,18 @@
 const express = require('express')
 require('dotenv').config();
-var cors = require('cors')
 const app = express()
 const PORT = process.env.PORT || 5000
 
-var whitelist = ['http://localhost:3000', 'https://pro-lague-api.herokuapp.com', 'https://pro-lague-client.herokuapp.com/', 'https://localhost:3000/home']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
+app.use((req, res, next) => {
+    const corsWhitelist = ['http://localhost:3000', 'https://pro-lague-api.herokuapp.com/*', 'https://pro-lague-client.herokuapp.com/*', 'https://localhost:3000/home']
+    ;
+    if (corsWhitelist.indexOf(req.headers.origin) !== -1) {
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     }
-  }
-}
-app.use(cors(corsOptions))
+
+    next();
+});
 const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
