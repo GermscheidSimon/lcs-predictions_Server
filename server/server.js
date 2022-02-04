@@ -4,7 +4,18 @@ var cors = require('cors')
 const app = express()
 const PORT = process.env.PORT || 5000
 
-app.use(cors())
+app.use((req, res, next) => {
+    const corsWhitelist = [
+        'http://localhost:3000/',
+        'https://pro-lague-client.herokuapp.com/',
+    ];
+    if (corsWhitelist.indexOf(req.headers.origin) !== -1) {
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    }
+
+    next();
+});
 const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
