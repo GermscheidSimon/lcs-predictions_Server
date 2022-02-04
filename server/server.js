@@ -18,7 +18,7 @@ app.disable("X-Powered-By");
 app.set("trust proxy", 1); 
 
 var corsOptions = {
-    origin: 'http://example.com',
+    origin: 'https://pro-lague-client.herokuapp.com',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
     methods: ['GET', 'PUT', 'POST'],
