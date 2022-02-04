@@ -9,6 +9,7 @@ const joinCodeGen = require('../modules/joinCodeGen')
 
 router.get('/getMyGroups',  async(req, res) => {
     try {
+        console.log(req.user, 'getgroupsbyuser')
         const accountObj = await account.getAccountByID(req.user._id) // get groups user is a part of
         const groups = accountObj.pickEmGroups
         const groupInformation = await pickEmGroups.getGroups(groups) // get groups
