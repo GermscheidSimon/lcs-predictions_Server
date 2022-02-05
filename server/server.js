@@ -43,8 +43,7 @@ app.use(cookieSession({
     key: 'user',
     secret:  process.env.SERVER_SESSION_SECRET,
     maxAge: 60 * 60 * 1000, // Set to 1 hour - 60 min/hour * 60 s/min * 1000 ms/s
-    secure: false,
-    httpOnly: false
+    sameSite: 'none'
 }));
 // Passport Session Configuration //
 app.use(passport.initialize());
