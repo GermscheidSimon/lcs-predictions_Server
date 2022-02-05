@@ -4,9 +4,6 @@ const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
 const app = express()
-app.use(sessionMiddleware);
-app.use(passport.initialize());
-app.use(passport.session());
 
 const cors = require('cors')
 const PORT = process.env.PORT || 5000
@@ -26,26 +23,16 @@ var corsOptions = {
   }
 
 app.use(cors(corsOptions))
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-
-// app.use((req, res, next) => {
-//     if(req.headers.origin === 'https://pro-lague-client.herokuapp.com'){
-//         console.log('from client')
-//     } else{
-//         (console.log(req.headers))
-//     }
-//     res.header('Access-Control-Allow-Origin', req.headers.origin);
-//     res.header('Access-Control-Allow-Headers', );
-//     res.header('Access-Control-Allow-Credentials', true)
-//     next();
-// });
-
-
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Passport Session Configuration //
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+
 app.use('/api/schedule', schedule)
 app.use('/api/pickEmGroup', pickEmGroup)
 app.use('/api/user', users)
