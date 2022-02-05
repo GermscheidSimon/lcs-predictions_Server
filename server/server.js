@@ -19,15 +19,18 @@ const corsOptions = {
   }
 app.use(cors(corsOptions))
 
+
+// app.disable("X-Powered-By");
+// app.set("trust proxy", 1); 
+
+
 app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-
+// Passport Session Configuration //
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Passport Session Configuration //
 
 
 app.use('/api/schedule', schedule)
