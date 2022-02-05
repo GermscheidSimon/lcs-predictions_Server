@@ -10,23 +10,34 @@ const users = require('./routes/user.router')
 
 const cors = require('cors')
 const app = express()
+app.set('trust proxy', 1) // trust first proxy
+
 const corsOptions = {
     origin: 'https://pro-lague-client.herokuapp.com',
     credentials: true,
-    methods: ['GET', 'PUT', 'POST'],
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
     exposedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
   }
 app.use(cors(corsOptions))
-
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    if ('OPTIONS' == req.method) {
+         res.send(200);
+     } else {
+         next();
+     }
+    });
 
 // app.disable("X-Powered-By");
 // app.set("trust proxy", 1); 
 
 
 app.use(sessionMiddleware);
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
 // Passport Session Configuration //
 app.use(passport.initialize());
 app.use(passport.session());
