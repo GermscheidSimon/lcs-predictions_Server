@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 5000
 const schedule = require('./routes/schedule.router')
 const pickEmGroup = require('./routes/pickEmGroup.router')
 const users = require('./routes/user.router')
+var cookieSession = require('cookie-session')
+
 
 const cors = require('cors')
 const app = express()
@@ -37,7 +39,13 @@ app.use(function(req, res, next) {
 // app.set("trust proxy", 1); 
 
 
-app.use(sessionMiddleware);
+app.use(cookieSession({ 
+    key: 'user',
+    secret:  process.env.SERVER_SESSION_SECRET,
+    maxAge: 60 * 60 * 1000, // Set to 1 hour - 60 min/hour * 60 s/min * 1000 ms/s
+    secure: false,
+    httpOnly: false
+}));
 // Passport Session Configuration //
 app.use(passport.initialize());
 app.use(passport.session());
