@@ -21,12 +21,12 @@ var corsOptions = {
     methods: ['GET', 'PUT', 'POST'],
     exposedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
   }
-
+app.use(await sessionMiddleware);
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(sessionMiddleware);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
