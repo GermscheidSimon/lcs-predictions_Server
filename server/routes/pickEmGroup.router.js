@@ -11,9 +11,10 @@ const {
 
 
 
-router.get('/getMyGroups',  rejectUnauthenticated, async(req, res) => {
+router.get('/getMyGroups', async(req, res) => {
     try {
         console.log(req.user, 'getgroupsbyuser')
+        console.log(req.isAuthenticated())
         const accountObj = await account.getAccountByID(req.user._id) // get groups user is a part of
         const groups = accountObj.pickEmGroups
         const groupInformation = await pickEmGroups.getGroups(groups) // get groups
