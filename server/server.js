@@ -3,26 +3,23 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./modules/userStrategy');
-const app = express()
-
-const cors = require('cors')
 const PORT = process.env.PORT || 5000
 const schedule = require('./routes/schedule.router')
 const pickEmGroup = require('./routes/pickEmGroup.router')
 const users = require('./routes/user.router')
 
-app.disable("X-Powered-By");
-app.set("trust proxy", 1); 
-
-var corsOptions = {
+const cors = require('cors')
+const app = express()
+const corsOptions = {
     origin: 'https://pro-lague-client.herokuapp.com',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
     methods: ['GET', 'PUT', 'POST'],
     exposedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
   }
-app.use(await sessionMiddleware);
 app.use(cors(corsOptions))
+
+app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
