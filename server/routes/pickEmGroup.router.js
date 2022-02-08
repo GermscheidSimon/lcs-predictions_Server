@@ -13,9 +13,7 @@ const {
 
 router.get('/getMyGroups', async(req, res) => {
     try {
-        console.log(req.user, 'getgroupsbyuser')
-        console.log(req)
-        console.log(req.isAuthenticated())
+
         const accountObj = await account.getAccountByID(req.user._id) // get groups user is a part of
         const groups = accountObj.pickEmGroups
         const groupInformation = await pickEmGroups.getGroups(groups) // get groups
@@ -167,6 +165,7 @@ router.post('/prediction', async (req, res) =>{
 router.put('/joinGroup', async (req, res) =>{
     try {
       console.log(req.body.code)
+      const isAdded = await pickEmGroups.addUserToGroup(req.body.groupID, req.body.code, req.user._id, req.user.username)
         res.sendStatus(200)
     } catch (error) {
         console.log(error);

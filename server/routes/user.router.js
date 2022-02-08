@@ -14,7 +14,7 @@ router.post('/login', userStrategy.authenticate('local'), (req, res) => {
     res.sendStatus(200);
 });
 
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     // Use passport's built-in method to log out the user
     req.logout();
     res.sendStatus(200);

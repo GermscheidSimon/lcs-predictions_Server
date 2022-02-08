@@ -4,7 +4,6 @@ const _mongo_user = require('../mongo/users')
 const crypt = require('./bcrypt')
 
 passport.serializeUser((user, done) => {
-  console.log('cereal', user)
     done(null, user);
   });
 
@@ -14,7 +13,7 @@ passport.deserializeUser( async (user, done) => {
     try {
         if (userObj ) {
             // user found
-            console.log('logonFound')
+            
             done(null, userObj );
           } else {
             // user not found
