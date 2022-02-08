@@ -119,9 +119,10 @@ const addPrediction = async (newPred) => {
     })
     const groupArr = await group.toArray()
     const predArry = groupArr[0].predictions
+    let updated = []
+    let onePrediction = {}
     if(predArry !== undefined && predArry.length > 0) {
-        let updated = []
-        let onePrediction = {}
+
         for (const prediction of predArry) {
             if(prediction.username !== newPred.username){
                 updated.push(prediction)
