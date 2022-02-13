@@ -11,6 +11,7 @@ const {
   } = require('../modules/authentication-middleware');
 
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
+    console.log('hi')
     res.sendStatus(200);
 });
 
@@ -23,11 +24,22 @@ router.get('/logout', (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const username = req.body.username;
-        const password = await bcrypt.createPassword(req.body.password);
-        const userObj = await user.putNewUSer(username, password)
-        const accountCreated = await account.createAccountFromID(userObj)
-        
-        res.sendStatus(201)
+        const userNameIsUnique = await user.getUserByUsername(username)
+        console.log(userNameIsUnique === undefined)
+        if(userNameIsUnique === undefined) {
+            const password = await bcrypt.createPassword(req.body.password);
+            const userObj = await user.putNewUSer(username, password)
+            const accountCreated = await account.createAccountFromID(userObj)
+            res.sendStatus({
+                message: "",
+                code: 201
+            })
+        } else {
+            res.send({
+                message: "Username is already in use",
+                code: 400
+            })
+        }
     } catch (error) {
         console.log(error)
     }   
